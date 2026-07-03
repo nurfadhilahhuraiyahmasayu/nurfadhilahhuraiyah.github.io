@@ -1256,7 +1256,7 @@
                     Hi! My full name is <strong>Nurfadhilah Huraiyah Masayu</strong>. Usually called Dhila, I'm an <strong>Information Systems</strong> student who loves blending data logic with visual aesthetics.
                 </p>
                 <p>
-                   "So you can code then?" hehe honestly still learning step by step. As for hobbies, I have many — I love cooking, listening to music, watching movies, designing/editing when I'm free 🙂, and sometimes I make time to go out (yep, traveling — usually to the beach).
+                   "So, that means you can code?" Hehe.. honestly, I'm still learning step by step. As for hobbies, I have many like I enjoy cooking, listening to music, watching movies, doing design or editing work when I have some downtime. I also make time to go out and explore (yep, traveling usually to the beach).
                 </p>
                 
                 <span class="handwritten">"Let's grow and shine together... 🎀"</span>
@@ -1540,22 +1540,26 @@ const portfolioData = {
     poster: {
         title: "Poster 🎨",
         items: [
-            { img: "assets/Poster Konser Kampus Nurfadhilah H.jpg", caption: "Campus Concert Poster", desc: "Event poster design for campus concert" },
-            { img: "assets/Poster Konser Kampus Nurfadhilah H.jpg", caption: "Graphic Design Work", desc: "Visual design using Canva & Photoshop" },
+            { img: "assets/Poster Konser Kampus Nurfadhilah H.jpg", caption: "Campus Concert Poster", desc: "Event poster design for assignment" },
+            { img: "assets/Porto13.jpeg", caption: "Project Poster Marketing", desc: "Visual design using Photoshop" },
+            { img: "assets/EDU.jpeg", caption: "Project Poster EDU Marketing", desc: "Visual design using Photoshop" },
+            { img: "assets/FOOD.jpeg", caption: "Project Poster Marketing", desc: "Visual design using Photoshop" },
+            { img: "assets/SNEAKERS.png", caption: "Project Poster Marketing", desc: "Visual design using Photoshop" },
+            { img: "assets/FOOD2.png", caption: "Project Poster Marketing", desc: "Visual design using Photoshop" },
         ]
     },
     website: {
         title: "Project Website 💻",
         items: [
-            { img: "assets/WhatsApp Image 2026-03-27 at 15.38.04.jpeg", caption: "Personal Portfolio", desc: "This portfolio website — built with HTML, CSS & JS" },
-            { img: "assets/WhatsApp Image 2026-03-27 at 15.38.04.jpeg", caption: "Web Project", desc: "Responsive web layout design" },
+            { img: "assets/BFCPIC.png", caption: "Web Project", desc: "This Project website — built with HTML, CSS & JS", link: "https://batamfindercampus.my.id/" },
+            { comingSoon: true, caption: "Coming Soon", desc: "New project in the works — stay tuned!" },
         ]
     },
     uidesign: {
         title: "UI Design 📱",
         items: [
             { img: "assets/WhatsApp Image 2026-03-27 at 15.38.04.jpeg", caption: "UI/UX Prototype", desc: "Mobile app design prototype in Figma" },
-            { img: "assets/WhatsApp Image 2026-03-27 at 15.38.04.jpeg", caption: "App Interface", desc: "Clean interface design with focus on usability" },
+            { comingSoon: true, caption: "Coming Soon", desc: "New design in the works — stay tuned!" },
         ]
     }
 };
@@ -1579,13 +1583,39 @@ function openPortfolioCategory(cat) {
         card.style.transform = `rotate(${rotations[i % rotations.length]}deg)`;
         if (i % 2 === 1) card.style.marginTop = '12px';
 
+        if (item.comingSoon) {
+            card.innerHTML = `
+                <div class="washi-tape-${i % 2 === 0 ? 'pink' : 'blue'}"></div>
+                <div class="porto-swipe-frame">
+                    <div class="porto-coming-soon">
+                        <i class="fa-solid fa-hourglass-half"></i>
+                        <span>Coming Soon</span>
+                    </div>
+                </div>
+                <p class="porto-swipe-caption">${item.caption}</p>
+                <p class="porto-swipe-desc">${item.desc}</p>
+            `;
+            wrapper.appendChild(card);
+            return;
+        }
+
+        const linkHTML = item.link
+            ? `<a href="${item.link}" target="_blank" rel="noopener noreferrer" class="porto-swipe-link" onclick="event.stopPropagation();">
+                   Visit Site <i class="fa-solid fa-arrow-up-right-from-square"></i>
+               </a>`
+            : '';
+
+        const isPoster = cat === 'poster';
+        const frameClass = isPoster ? 'porto-swipe-frame porto-swipe-frame-poster' : 'porto-swipe-frame';
+
         card.innerHTML = `
             <div class="washi-tape-${i % 2 === 0 ? 'pink' : 'blue'}"></div>
-            <div class="porto-swipe-frame">
+            <div class="${frameClass}">
                 <img src="${item.img}" alt="${item.caption}">
             </div>
             <p class="porto-swipe-caption">${item.caption}</p>
             <p class="porto-swipe-desc">${item.desc}</p>
+            ${linkHTML}
         `;
         wrapper.appendChild(card);
     });
@@ -1772,6 +1802,17 @@ document.addEventListener('click', function() {
     border-radius: 2px;
     border: 1px solid #eee;
 }
+.porto-swipe-frame-poster {
+    padding: 10px 10px 38px;
+}
+.porto-swipe-frame-poster img {
+    height: 320px;
+    object-fit: contain;
+    background: #faf9ff;
+}
+.porto-swipe-card:has(.porto-swipe-frame-poster) {
+    width: 220px;
+}
 .porto-swipe-caption {
     font-family: 'Playfair Display', serif;
     font-size: 13px;
@@ -1786,6 +1827,59 @@ document.addEventListener('click', function() {
     text-align: center;
     line-height: 1.4;
     padding: 0 4px;
+}
+.porto-swipe-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin: 10px auto 0;
+    width: fit-content;
+    background: #7a77d1;
+    color: #fff;
+    font-size: 11px;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 6px 14px;
+    border-radius: 20px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(122,119,209,0.35);
+}
+.porto-swipe-link:hover {
+    background: #5f5cbf;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(122,119,209,0.45);
+}
+.porto-swipe-link i {
+    font-size: 10px;
+}
+.porto-coming-soon {
+    width: 100%;
+    height: 240px;
+    border-radius: 2px;
+    border: 1px dashed #c9c6f0;
+    background: repeating-linear-gradient(
+        135deg,
+        #f7f6ff,
+        #f7f6ff 10px,
+        #f0eeff 10px,
+        #f0eeff 20px
+    );
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: #a8a5da;
+}
+.porto-coming-soon i {
+    font-size: 26px;
+}
+.porto-coming-soon span {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
 }
 </style>
 
